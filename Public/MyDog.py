@@ -15,12 +15,12 @@ class FileEventHandler(FileSystemEventHandler):
         tm = time.localtime(time.time())
         datetime = str(tm[0]) + str(tm[1]) + str(tm[2])
         logpsth = 'G:\\黄大宝python\\测试目录\\log'
-        checkName = os.path.join(logpsth,"ChangeFileNames{0}".format(datetime) + ".txt")
+        checkName = os.path.join(logpsth, "ChangeFileNames{0}".format(datetime) + ".txt")
         
         if not os.path.isfile(checkName):
             fs = open(checkName, 'w+')
             fs.close()
-            print("OK????")
+            print("创建文件[%s]成功" % checkName)
         return checkName
     
     def WriteInfo(self, filename, info):
@@ -28,36 +28,41 @@ class FileEventHandler(FileSystemEventHandler):
             fs.readlines()
             fs.write('\n')
             fs.write(info)
-            fs.write('\n')
+            return "O00000"
             
-    def on_moved(self, event):
-        if event.is_directory:
-            print("directory moved from {0} to {1}".format(event.src_path, event.dest_path))
-        else:
-            print("file moved from {0} to {1}".format(event.src_path, event.dest_path))
-
-    def on_created(self, event):
-        if event.is_directory:
-            print("directory created:{0}".format(event.src_path))
-        else:
-            print("file created:{0}".format(event.src_path))
-
-    def on_deleted(self, event):
-        if event.is_directory:
-            print("directory deleted:{0}".format(event.src_path))
-        else:
-            print("file deleted:{0}".format(event.src_path))
+    # def on_moved(self, event):
+    #     if event.is_directory:
+    #         print("directory moved from {0} to {1}".format(event.src_path, event.dest_path))
+    #     else:
+    #         print("file moved from {0} to {1}".format(event.src_path, event.dest_path))
+    #
+    # def on_created(self, event):
+    #     if event.is_directory:
+    #         print("directory created:{0}".format(event.src_path))
+    #     else:
+    #         print("file created:{0}".format(event.src_path))
+    #
+    # def on_deleted(self, event):
+    #     if event.is_directory:
+    #         print("directory deleted:{0}".format(event.src_path))
+    #     else:
+    #         print("file deleted:{0}".format(event.src_path))
 
     def on_modified(self, event):
         info = event.src_path
-        print("file modified:{0}".format(info))
         filename = self.chkfile(info)
-        self.WriteInfo(filename, info)
+        ret = self.WriteInfo(filename, info)
         # print("file modified:{0}".format(event.src_path))
         # if event.is_directory:
         #     print("directory modified:{0}".format(event.src_path))
         # else:
         #     print("file modified:{0}".format(event.src_path))
+        print(type(ret))
+        if ret == "O00000":
+            print("OK")
+        else:
+            print("Not OK")
+            
         
 
 if __name__ == "__main__":

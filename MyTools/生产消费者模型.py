@@ -22,7 +22,6 @@ if __name__ == '__main__':
     p1 = Process(target=producer, args=('monicx', q))
     c2 = Process(target=consumer, args=('旦丁', q))
 
-    
     p1.start()
     c1.start()
     print('---------------------------')
